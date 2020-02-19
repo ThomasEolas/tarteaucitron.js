@@ -213,6 +213,7 @@ var tarteaucitron = {
                 "hashtag": '#tarteaucitron',
                 "cookieName": 'tarteaucitron',
                 "highPrivacy": true,
+                "freeConsent": [],
                 "orientation": "middle",
                 "removeCredit": false,
                 "showAlertSmall": true,
@@ -245,6 +246,7 @@ var tarteaucitron = {
         tarteaucitron.orientation = tarteaucitron.parameters.orientation;
         tarteaucitron.hashtag = tarteaucitron.parameters.hashtag;
         tarteaucitron.highPrivacy = tarteaucitron.parameters.highPrivacy;
+        tarteaucitron.freeConsent = tarteaucitron.parameters.freeConsent;
         tarteaucitron.handleBrowserDNTRequest = tarteaucitron.parameters.handleBrowserDNTRequest;
 
         // Step 1: load css
@@ -557,6 +559,32 @@ var tarteaucitron = {
             html += '<li id="' + service.key + 'Line" class="tarteaucitronLine">';
             html += '   <div class="tarteaucitronName">';
             html += '       <span class="tarteaucitronH3" role="heading" aria-level="3">' + service.name + '</span>';
+               
+                if (service.type == 'ads') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['ads'].details + '</div><br/>';
+                }
+                if (service.type == 'analytic') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['analytic'].details + '</div><br/>';
+                }
+                if (service.type == 'social') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['social'].details + '</div><br/>';
+                }
+                if (service.type == 'video') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['video'].details + '</div><br/>';
+                }
+                if (service.type == 'comment') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['comment'].details + '</div><br/>';
+                }
+                if (service.type == 'support') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['support'].details + '</div><br/>';
+                }
+                if (service.type == 'api') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['api'].details + '</div><br/>';
+                }
+                if (service.type == 'other') {
+                    html += '       <div id="tacIdCs">' +tarteaucitron.lang['other'].details + '</div><br/>';
+                }
+
             html += '       <span id="tacCL' + service.key + '" class="tarteaucitronListCookies"></span><br/>';
 
             if (tarteaucitron.parameters.moreInfoLink == true) {
@@ -632,16 +660,35 @@ var tarteaucitron = {
             tarteaucitron.state[service.key] = false;
             tarteaucitron.userInterface.color(service.key, false);
         } else if (!isResponded) {
+            if (tarteaucitron.freeConsent.includes(service.key)) { 
+                if (!isAllowed) { 
+                
+                tarteaucitron.cookie.create(service.key, true); 
+                
+                } 
+                
+                if (tarteaucitron.launch[service.key] !== true) { 
+                
+                tarteaucitron.launch[service.key] = true; 
+                
+                service.js(); 
+                
+                } 
+                
+                tarteaucitron.state[service.key] = true; 
+                
+                tarteaucitron.userInterface.color(service.key, true); 
+                
+                } else {// Sinon fonctionnement classique de TAC il est en attente 
             tarteaucitron.cookie.create(service.key, 'wait');
             if (typeof service.fallback === 'function') {
                 service.fallback();
             }
             tarteaucitron.userInterface.color(service.key, 'wait');
             tarteaucitron.userInterface.openAlert();
-        }
+        }}
 
         tarteaucitron.cookie.checkCount(service.key);
-        tarteaucitron.sendEvent(service.key + '_added')
     },
     "sendEvent" : function(event_key) {
         if(event_key !== undefined) {
