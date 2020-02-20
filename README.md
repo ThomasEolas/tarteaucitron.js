@@ -3,7 +3,7 @@ tarteaucitron.js
 Comply to the european cookie law is simple with the french *tarte au citron*.
 
 # CustomText
-See CText.js
+See <a href="/ThomasEolas/tarteaucitron.js/blob/LAM/Ctext.js">CText.js</a>
     
   # Init
    tarteaucitron.init({
