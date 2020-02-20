@@ -285,7 +285,7 @@ var tarteaucitron = {
                     html = '',
                     index,
                     orientation = 'Top',
-                    cat = ['ads', 'analytic', 'Statistiques', 'api', 'comment', 'social', 'support', 'video', 'other'],
+                    cat = ['ads', 'analytic', 'api', 'comment', 'social', 'support', 'video', 'other'],
                     i;
 
                 cat = cat.sort(function (a, b) {
@@ -556,7 +556,7 @@ var tarteaucitron = {
             isAllowed = (cookie.indexOf(service.key + '=true') >= 0) ? true : false,
             isResponded = (cookie.indexOf(service.key + '=false') >= 0 || cookie.indexOf(service.key + '=true') >= 0) ? true : false,
             isDNTRequested = (navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1" || window.doNotTrack === "1") ? true : false,
-            cat = ['ads', 'analytic', 'Statistiques', 'api', 'comment', 'social', 'support', 'video', 'other'],
+            cat = ['ads', 'analytic','api', 'comment', 'social', 'support', 'video', 'other'],
             i;
 
         cat = cat.sort(function (a, b) {
@@ -570,8 +570,29 @@ var tarteaucitron = {
             html += '<li id="' + service.key + 'Line" class="tarteaucitronLine">';
             html += '   <div class="tarteaucitronName">';
             html += '       <span class="tarteaucitronH3" role="heading" aria-level="3">' + service.name + '</span>';
-            if (service.type === 'Statistiques') {
+            if (service.type == 'ads') {
                 html += '       <div id="tacIdCs">' +tarteaucitron.lang['ads'].details + '</div><br/>';
+            }
+            if (service.type == 'analytic') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['analytic'].details + '</div><br/>';
+            }
+            if (service.type == 'social') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['social'].details + '</div><br/>';
+            }
+            if (service.type == 'video') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['video'].details + '</div><br/>';
+            }
+            if (service.type == 'comment') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['comment'].details + '</div><br/>';
+            }
+            if (service.type == 'support') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['support'].details + '</div><br/>';
+            }
+            if (service.type == 'api') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['api'].details + '</div><br/>';
+            }
+            if (service.type == 'other') {
+                html += '       <div id="tacIdCs">' +tarteaucitron.lang['other'].details + '</div><br/>';
             }
 
             html += '       <span id="tacCL' + service.key + '" class="tarteaucitronListCookies"></span><br/>';
