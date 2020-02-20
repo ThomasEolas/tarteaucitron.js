@@ -1,6 +1,6 @@
-tarteaucitron.js
+Live version
 ================
-Comply to the european cookie law is simple with the french *tarte au citron*.
+<a href="http://gamtac.herokuapp.com/" target="_blank">http://gamtac.herokuapp.com/</a>
 
 # CustomText
 See <a href="/ThomasEolas/tarteaucitron.js/blob/LAM/Ctext.js">CText.js</a>
