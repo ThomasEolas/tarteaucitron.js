@@ -2971,3 +2971,63 @@ tarteaucitron.services.youtubeapi = {
         tarteaucitron.addScript('https://www.youtube.com/player_api');
     }
 };
+
+// Matomo Tag Manager
+tarteaucitron.services.matomotagmanager = {
+    "key": "matomotagmanager",
+    "type": "analytic",
+    "name": "Piwik",
+    "needConsent": false,
+    "cookies": ['_pk_ref', '_pk_cvar', '_pk_id', '_pk_ses', '_pk_hsr', 'piwik_ignore', '_pk_uid', 'stg_last_interaction', 'stg_returning_visitor', 'stg_traffic_source_priority'],
+    "readmoreLink": "/",
+    "js": function () {
+        "use strict";
+        // When cookie allowed
+        if (tarteaucitron.user.matomoTagManagerId === undefined) {
+            return;
+        }
+        if (tarteaucitron.user.domainHost === undefined) {
+            return;
+        }
+        var _mtm = _mtm || [];
+        tarteaucitron.addScript(tarteaucitron.user.domainHost + '.containers.piwik.pro/' + tarteaucitron.user.matomoTagManagerId + '.js', function () {
+            function stgCreateCookie(a, b, c) {
+            var d = ""; 
+            if (c) { var e = new Date; e.setTime(e.getTime() + 24 * c * 60 * 60 * 1e3), d = "; expires=" + e.toUTCString() }
+            document.cookie = a + "=" + b + d + "; path=/" }
+            var isStgDebug = (window.location.href.match("stg_debug") || window.document.cookie.match("stg_debug")) && !window.location.href.match("stg_disable_debug"); stgCreateCookie("stg_debug", isStgDebug ? 1 : "", isStgDebug ? 14 : -1);
+            var url = domainHost + ".containers.piwik.pro/" + matomoTagManagerId + ".sync.js" + (isStgDebug ? "?stg_debug" : "");
+            document.write('<script src="' + url + '"></' + 'script>');
+    });
+
+    var interval = setInterval(function () {
+        if (typeof Piwik === 'undefined') return
+
+        clearInterval(interval)
+
+        // make piwik/matomo cookie accessible by getting tracker
+        Piwik.getTracker();
+
+        // looping throught cookies
+        var theCookies = document.cookie.split(';');
+        for (var i = 1; i <= theCookies.length; i++) {
+            var cookie = theCookies[i - 1].split('=');
+            var cookieName = cookie[0].trim();
+
+            // if cookie starts like a piwik one, register it
+            if (cookieName.indexOf('_pk_') === 0) {
+                tarteaucitron.services.matomotagmanager.cookies.push(cookieName);
+            }
+            if (cookieName.indexOf('stg_') === 0) {
+                tarteaucitron.services.matomotagmanager.cookies.push(cookieName)
+            }
+        }
+    }, 100)
+
+
+},
+    "fallback": function () {
+        "use strict";
+        // When cookie denied
+    } 
+};
